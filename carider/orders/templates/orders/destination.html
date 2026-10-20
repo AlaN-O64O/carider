@@ -1,0 +1,18 @@
+{% extends "orders/base.html" %}
+{% block title %}Куда едем?{% endblock %}
+{% block heading %}Куда едем?{% endblock %}
+{% block content %}
+  <form action="/quote" method="get">
+    <label for="pickup">Откуда</label>
+    <input id="pickup" type="text" class="readonly"
+           value="ул. Абая, 15 (вы здесь)" readonly>
+    <label for="destination">Куда</label>
+    <input id="destination" name="destination" type="text" maxlength="250"
+           list="hints" value="{{ destination }}" autocomplete="off">
+    <datalist id="hints">
+      {% for hint in hints %}<option value="{{ hint }}">{% endfor %}
+    </datalist>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <button class="btn" type="submit">Рассчитать стоимость</button>
+  </form>
+{% endblock %}

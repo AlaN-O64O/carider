@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CaRider — {% block title %}{% endblock %}</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; color: #2b2b2b;
+           max-width: 360px; margin: 0 auto; }
+    header { background: #dcdcdc; padding: 16px; font-size: 17px; font-weight: bold; }
+    main { padding: 16px; }
+    label { font-size: 12px; color: #6b6b6b; display: block; margin: 12px 0 4px; }
+    input[type=text] { width: 100%; box-sizing: border-box; padding: 12px;
+                       font-size: 14px; border: 1px solid #9a9a9a; border-radius: 6px; }
+    .readonly { background: #ececec; }
+    .btn { display: block; width: 100%; box-sizing: border-box; margin-top: 24px;
+           padding: 14px; background: #2b2b2b; color: #fff; border: 0;
+           border-radius: 8px; font-size: 15px; font-weight: bold;
+           text-align: center; text-decoration: none; }
+    .card { background: #fff; border: 1px solid #9a9a9a; border-radius: 6px;
+            padding: 12px; margin-top: 12px; }
+    .price { font-size: 34px; font-weight: bold; margin: 4px 0; }
+    .error { border: 2px solid #2b2b2b; border-radius: 6px; padding: 12px;
+             background: #fff; margin-top: 12px; }
+    .muted { color: #6b6b6b; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>{% block heading %}{% endblock %}</header>
+  <main>{% block content %}{% endblock %}</main>
+</body>
+</html>

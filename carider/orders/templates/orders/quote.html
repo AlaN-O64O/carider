@@ -1,0 +1,27 @@
+{% extends "orders/base.html" %}
+{% block title %}Стоимость и условия{% endblock %}
+{% block heading %}Стоимость и условия{% endblock %}
+{% block content %}
+  {% if error %}
+    <div class="error">
+      <strong>Ошибка соединения</strong>
+      <p>Не удалось рассчитать стоимость: нет связи с сервером. Проверьте интернет
+         и нажмите «Повторить». Заказ не создан.</p>
+    </div>
+    <a class="btn" href="{{ request.full_path }}">Повторить</a>
+  {% else %}
+    <div class="card">
+      ● {{ quote.pickup }}<br>■ {{ quote.destination }}
+      <a href="/" style="float:right">Изменить</a>
+    </div>
+    <p class="muted">Стоимость поездки</p>
+    <div class="price">{{ quote.price_tg | tg }} тг</div>
+    <p>В пути: ≈ {{ quote.duration_min }} мин</p>
+    <div class="card">
+      <strong>Условия отмены</strong><br>
+      Бесплатно — {{ quote.free_cancel_seconds // 60 }} минуту после заказа.
+      Дальше взимается штраф.
+    </div>
+    <p class="muted">Кнопка «Заказать» появится в ЛР №7 вместе с созданием заказа.</p>
+  {% endif %}
+{% endblock %}
