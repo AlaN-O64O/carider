@@ -1,0 +1,28 @@
+{% extends "orders/base.html" %}
+{% block head %}{% if not no_drivers %}<meta http-equiv="refresh" content="2">{% endif %}{% endblock %}
+{% block title %}Поиск водителя{% endblock %}
+{% block heading %}Поиск водителя{% endblock %}
+{% block content %}
+  {% if no_drivers %}
+    <div class="error">
+      <strong>Свободных машин нет</strong>
+      <p>Сейчас все водители заняты. Повторите поиск или отмените заказ.</p>
+    </div>
+  {% else %}
+    <p><strong>Ищем ближайшего водителя…</strong></p>
+    <p class="muted">Обычно это занимает до 15 секунд</p>
+  {% endif %}
+  <div class="card">
+    <strong>{{ order }}</strong> <span class="badge">{{ order.status_label }}</span><br>
+    {{ order.pickup }} → {{ order.destination }}<br>
+    <span class="muted">Бесплатная отмена ещё {{ left_text }}</span>
+  </div>
+  {% if no_drivers %}
+    <form action="/orders/{{ order.id }}/search" method="post">
+      <button class="btn" type="submit">Повторить поиск</button>
+    </form>
+  {% endif %}
+  <form action="/orders/{{ order.id }}/cancel" method="post">
+    <button class="btn secondary" type="submit">Отменить заказ</button>
+  </form>
+{% endblock %}

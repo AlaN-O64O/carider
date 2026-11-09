@@ -1,0 +1,17 @@
+{% extends "orders/base.html" %}
+{% block title %}Водитель найден{% endblock %}
+{% block heading %}Водитель найден{% endblock %}
+{% block content %}
+  <div class="card">
+    <span class="badge">{{ order.status_label }}</span>
+    <h2>{{ offer.name }}</h2>
+    <p>{{ offer.car }} · {{ offer.plate }}</p>
+    {% if offer.eta_min %}<p><strong>Подъедет через {{ offer.eta_min }} мин</strong></p>{% endif %}
+    <p class="muted">{{ order.pickup }} → {{ order.destination }}<br>
+       {{ order }} · {{ order.price_tg | tg }} тг</p>
+  </div>
+  <form action="/orders/{{ order.id }}/cancel" method="post">
+    <button class="btn secondary" type="submit">Отменить заказ</button>
+  </form>
+  <p class="muted">Бесплатно ещё {{ left_text }}</p>
+{% endblock %}

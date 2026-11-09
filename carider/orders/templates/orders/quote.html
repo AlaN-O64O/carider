@@ -1,6 +1,6 @@
 {% extends "orders/base.html" %}
 {% block title %}Стоимость и условия{% endblock %}
-{% block heading %}Стоимость и условия{% endblock %}
+{% block heading %}<a href="/">←</a>Стоимость и условия{% endblock %}
 {% block content %}
   {% if error %}
     <div class="error">
@@ -22,6 +22,14 @@
       Бесплатно — {{ quote.free_cancel_seconds // 60 }} минуту после заказа.
       Дальше взимается штраф.
     </div>
-    <p class="muted">Кнопка «Заказать» появится в ЛР №7 вместе с созданием заказа.</p>
+    <form action="/order" method="post">
+      <input type="hidden" name="destination" value="{{ quote.destination }}">
+      <input type="hidden" name="price_tg" value="{{ quote.price_tg }}">
+      <label class="check">
+        <input type="checkbox" name="consent"> Согласен с ценой и условиями
+      </label>
+      {% if form_error %}<div class="error">{{ form_error }}</div>{% endif %}
+      <button class="btn" type="submit">Заказать за {{ quote.price_tg | tg }} тг</button>
+    </form>
   {% endif %}
 {% endblock %}

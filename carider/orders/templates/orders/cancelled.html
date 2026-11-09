@@ -1,0 +1,13 @@
+{% extends "orders/base.html" %}
+{% block title %}Заказ отменён{% endblock %}
+{% block heading %}Заказ отменён{% endblock %}
+{% block content %}
+  <p><strong>{{ order }} отменён</strong></p>
+  <p><span class="badge">{{ order.status_label }}</span></p>
+  {% if order.penalty %}
+    <p class="muted">Удержан штраф за отмену: заказ отменён позже чем через 1 минуту.</p>
+  {% else %}
+    <p class="muted">Штраф не взят: вы отменили заказ в течение 1 минуты.</p>
+  {% endif %}
+  <a class="btn" href="/">Заказать заново</a>
+{% endblock %}

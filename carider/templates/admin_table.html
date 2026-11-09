@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><title>{{ title }}</title>
+  <style>table { border-collapse: collapse; } td, th { border: 1px solid #999; padding: 4px 8px; }</style>
+</head>
+<body>
+  <p><a href="/admin/">← Разделы</a></p>
+  <h1>{{ title }}</h1>
+  <table>
+    <tr>{% for column in columns %}<th>{{ column }}</th>{% endfor %}</tr>
+    {% for row in rows %}
+      <tr>{% for value in row %}<td>{{ value }}</td>{% endfor %}</tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
