@@ -103,7 +103,7 @@ def find_driver(conn, order_id, now=None):
     if _try_assign(conn, order):
         return _offer(conn, orders.get_order(conn, order_id))
     started = order.search_started_at or order.created_at
-    if now - started >= SEARCH_TIMEOUT:
+    if now - started > SEARCH_TIMEOUT:
         raise NoDriversError()
     return None
 
