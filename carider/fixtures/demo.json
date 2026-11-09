@@ -1,0 +1,28 @@
+{
+  "places": [
+    {"id": 1, "name": "ул. Ауэзова, 4", "distance_km": 6.4},
+    {"id": 2, "name": "ул. Ауэзова, 42", "distance_km": 7.0},
+    {"id": 3, "name": "ул. Ауэзова, 42А", "distance_km": 7.1},
+    {"id": 4, "name": "Железнодорожный вокзал", "distance_km": 3.5},
+    {"id": 5, "name": "Аэропорт", "distance_km": 18.0}
+  ],
+  "clients": [
+    {"id": 1, "phone": "+77010000001", "consent_pd": 1, "registered_at": "2026-10-01T09:00:00+00:00", "is_blocked": 0},
+    {"id": 2, "phone": "+77010000002", "consent_pd": 1, "registered_at": "2026-10-03T14:30:00+00:00", "is_blocked": 0},
+    {"id": 3, "phone": "+77010000003", "consent_pd": 1, "registered_at": "2026-10-05T18:10:00+00:00", "is_blocked": 1}
+  ],
+  "drivers": [
+    {"id": 1, "full_name": "Ерлан Темиров", "phone": "+77020000001", "car_model": "Toyota Camry", "plate": "482 BKA 01", "status": "free"},
+    {"id": 2, "full_name": "Айдос Мусин", "phone": "+77020000002", "car_model": "Hyundai Elantra", "plate": "215 KZA 01", "status": "free"},
+    {"id": 3, "full_name": "Серик Байжанов", "phone": "+77020000003", "car_model": "Kia Rio", "plate": "903 DAB 01", "status": "free"},
+    {"id": 4, "full_name": "Нурлан Кенжебаев", "phone": "+77020000004", "car_model": "Skoda Octavia", "plate": "117 CMB 01", "status": "busy"},
+    {"id": 5, "full_name": "Талгат Омаров", "phone": "+77020000005", "car_model": "Chevrolet Nexia", "plate": "336 LKA 01", "status": "free"}
+  ],
+  "driver_positions": [
+    {"driver_id": 1, "lat": 51.14327, "lon": 71.4300, "updated_at": "2026-11-02T11:59:00+00:00"},
+    {"driver_id": 2, "lat": 51.1280, "lon": 71.4715, "updated_at": "2026-11-02T11:58:30+00:00"},
+    {"driver_id": 3, "lat": 51.0912, "lon": 71.4300, "updated_at": "2026-11-02T11:57:10+00:00"},
+    {"driver_id": 4, "lat": 51.1325, "lon": 71.4300, "updated_at": "2026-11-02T11:59:40+00:00"},
+    {"driver_id": 5, "lat": 51.2358, "lon": 71.4300, "updated_at": "2026-11-02T11:55:00+00:00"}
+  ]
+}
