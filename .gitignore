@@ -7,3 +7,5 @@ instance/
 .idea/
 .vscode/
 .ruff_cache/
+htmlcov/
+.coverage
