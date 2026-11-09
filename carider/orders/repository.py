@@ -1,30 +1,102 @@
-"""Слой доступа к данным модуля «Заказы».
+"""Слой доступа к данным модуля «Заказы»."""
 
-Пока это заглушка вместо PostgreSQL и сервиса карт. В ЛР №7 её заменят
-запросы к базе данных и к сервису геокодирования.
-"""
+from datetime import datetime
 
-PICKUP_ADDRESS = "ул. Абая, 15"  # В реальной системе берётся из геолокации.
+from .models import Order, Place
 
-# Ключ — адрес в нижнем регистре; значение — название и расстояние в км.
-_PLACES = {
-    "ул. ауэзова, 4": {"name": "ул. Ауэзова, 4", "distance_km": 6.4},
-    "ул. ауэзова, 42": {"name": "ул. Ауэзова, 42", "distance_km": 7.0},
-    "ул. ауэзова, 42а": {"name": "ул. Ауэзова, 42А", "distance_km": 7.1},
-    "железнодорожный вокзал": {"name": "Железнодорожный вокзал", "distance_km": 3.5},
-    "аэропорт": {"name": "Аэропорт", "distance_km": 18.0},
-}
+# Положение клиента. В реальной системе его присылает телефон (геолокация),
+# поэтому это заглушка внешней системы, а не данные из БД.
+PICKUP_ADDRESS = "ул. Абая, 15"
+PICKUP_POINT = (51.1280, 71.4300)
 
 
-def _normalize(text: str) -> str:
+def _normalize(text):
     return " ".join(text.lower().split())
 
 
-def find_place(text: str) -> dict | None:
-    """Найти пункт назначения по адресу или вернуть None."""
-    return _PLACES.get(_normalize(text))
+def _time(value):
+    return datetime.fromisoformat(value) if value else None
 
 
-def list_place_names() -> list[str]:
-    """Названия известных пунктов для подсказок на экране Э-01."""
-    return [place["name"] for place in _PLACES.values()]
+def _order(row):
+    return Order(
+        id=row["id"],
+        client_id=row["client_id"],
+        driver_id=row["driver_id"],
+        pickup=row["pickup"],
+        pickup_lat=row["pickup_lat"],
+        pickup_lon=row["pickup_lon"],
+        destination=row["destination"],
+        price_tg=row["price_tg"],
+        status=row["status"],
+        created_at=_time(row["created_at"]),
+        search_started_at=_time(row["search_started_at"]),
+        cancelled_at=_time(row["cancelled_at"]),
+        penalty=bool(row["penalty"]),
+    )
+
+
+def find_place(conn, text):
+    """Найти адрес без учёта регистра и лишних пробелов или вернуть None.
+
+    Сравнение делается в Python: функция lower() в SQLite не понимает
+    кириллицу.
+    """
+    wanted = _normalize(text)
+    for row in conn.execute("SELECT * FROM places"):
+        if _normalize(row["name"]) == wanted:
+            return Place(**dict(row))
+    return None
+
+
+def list_place_names(conn):
+    """Названия адресов для подсказок на экране Э-01."""
+    return [row["name"] for row in conn.execute("SELECT name FROM places ORDER BY id")]
+
+
+def insert_order(conn, client_id, destination, price_tg, created_at):
+    """Создать заказ в состоянии «Создан» (коммит — на вызывающем)."""
+    lat, lon = PICKUP_POINT
+    cursor = conn.execute(
+        "INSERT INTO orders (client_id, pickup, pickup_lat, pickup_lon, "
+        "destination, price_tg, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (
+            client_id,
+            PICKUP_ADDRESS,
+            lat,
+            lon,
+            destination,
+            price_tg,
+            created_at.isoformat(),
+        ),
+    )
+    return get_order(conn, cursor.lastrowid)
+
+
+def get_order(conn, order_id):
+    """Заказ по номеру или None."""
+    row = conn.execute("SELECT * FROM orders WHERE id = ?", (order_id,)).fetchone()
+    return _order(row) if row else None
+
+
+def assign_driver(conn, order_id, driver_id):
+    """Назначить таксиста. Второй активный заказ того же таксиста — IntegrityError."""
+    conn.execute(
+        "UPDATE orders SET driver_id = ?, status = 'assigned' WHERE id = ?",
+        (driver_id, order_id),
+    )
+
+
+def set_search_started(conn, order_id, started_at):
+    conn.execute(
+        "UPDATE orders SET search_started_at = ? WHERE id = ?",
+        (started_at.isoformat(), order_id),
+    )
+
+
+def mark_cancelled(conn, order_id, cancelled_at, penalty):
+    conn.execute(
+        "UPDATE orders SET status = 'cancelled', cancelled_at = ?, penalty = ? "
+        "WHERE id = ?",
+        (cancelled_at.isoformat(), int(penalty), order_id),
+    )
