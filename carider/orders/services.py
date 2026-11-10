@@ -40,7 +40,7 @@ class Quote:
 
 def now_utc():
     """Текущее время с часовым поясом UTC (единый источник времени)."""
-    return datetime.now()
+    return datetime.now(UTC)
 
 
 def calculate_quote(conn, destination):
