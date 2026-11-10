@@ -11,7 +11,7 @@
   {% else %}
     <p><strong>Ищем ближайшего водителя…</strong></p>
     <p class="muted">Обычно это занимает до 15 секунд</p>
-  
+  {% endif %}
   <div class="card">
     <strong>{{ order }}</strong> <span class="badge">{{ order.status_label }}</span><br>
     {{ order.pickup }} → {{ order.destination }}<br>
