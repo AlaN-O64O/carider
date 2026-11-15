@@ -4,3 +4,10 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
+
+[tool.coverage.run]
+branch = true
+source = ["carider"]
+
+[tool.coverage.report]
+show_missing = true
