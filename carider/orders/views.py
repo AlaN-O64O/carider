@@ -17,8 +17,10 @@ from . import forms, services
 from .errors import (
     DestinationNotFoundError,
     InvalidDestinationError,
+    OrderStateError,
     RoutingServiceError,
 )
+from .models import OrderStatus
 
 bp = Blueprint("orders", __name__, template_folder="templates")
 
@@ -96,8 +98,10 @@ def cancel_screen(order_id):
 
 @bp.get("/orders/<int:order_id>/cancelled")
 def cancelled_screen(order_id):
-    """Э-05 «Заказ отменён»."""
+    """Э-05 «Заказ отменён»: только для отменённого заказа."""
     order = services.get_order(get_db(), order_id)
+    if order.status != OrderStatus.CANCELLED:
+        raise OrderStateError()
     return render_template("orders/cancelled.html", order=order)
 
 
