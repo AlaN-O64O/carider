@@ -4,6 +4,9 @@ import re
 
 PHONE_RE = re.compile(r"\+7[0-9]{10}")
 
+def _text(value):
+    """Строка как есть; всё остальное (null, число) — пустая строка."""
+    return value if isinstance(value, str) else ""
 
 def validate_order_payload(data):
     """Проверить формат полей заказа.
@@ -25,7 +28,7 @@ def validate_order_payload(data):
             errors["price_tg"] = "Цена должна быть больше нуля."
 
     clean = {
-        "destination": str(data.get("destination", "")),
+        "destination": _text(data.get("destination")),
         "phone": phone,
         "price_tg": price,
     }
