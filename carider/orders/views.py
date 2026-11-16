@@ -108,7 +108,9 @@ def cancelled_screen(order_id):
 @bp.post("/api/quotes/")
 def api_create_quote():
     """Операция 1: POST /api/quotes/ — расчёт стоимости."""
-    data = request.get_json(silent=True) or {}
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        data = {}
     destination = data.get("destination")
     if not isinstance(destination, str):
         destination = ""
