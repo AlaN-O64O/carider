@@ -2,7 +2,7 @@
 
 import re
 
-PHONE_RE = re.compile(r"^\+7\d{10}$")
+PHONE_RE = re.compile(r"\+7[0-9]{10}")
 
 
 def validate_order_payload(data):
@@ -12,7 +12,7 @@ def validate_order_payload(data):
     """
     errors = {}
     phone = str(data.get("phone", ""))
-    if not PHONE_RE.match(phone):
+    if not PHONE_RE.fullmatch(phone):
         errors["phone"] = "Введите номер в формате +77011234567."
 
     price = 0
