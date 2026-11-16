@@ -60,7 +60,6 @@ class DestinationApiTest(FrozenApiTestCase):
                 code = response.get_json()["error"]["code"]
                 self.assertEqual(code, "INVALID_DESTINATION")
 
-
     def test_destination_in_order_must_be_a_string(self):
         """Недопустимый класс для заказа: null вместо адреса — 400. Дефект Д-5."""
         response = self.post_order(destination=None)
