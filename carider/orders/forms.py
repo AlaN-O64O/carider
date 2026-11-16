@@ -19,13 +19,17 @@ def validate_order_payload(data):
         errors["phone"] = "Введите номер в формате +77011234567."
 
     price = 0
-    try:
-        price = int(data.get("price_tg"))
-    except (TypeError, ValueError):
+    raw = data.get("price_tg")
+    if isinstance(raw, (bool, float)):  # true и 1850.5 — не целые числа
         errors["price_tg"] = "Цена должна быть целым числом."
     else:
-        if price <= 0:
-            errors["price_tg"] = "Цена должна быть больше нуля."
+        try:
+            price = int(raw)
+        except (TypeError, ValueError):
+            errors["price_tg"] = "Цена должна быть целым числом."
+        else:
+            if price <= 0:
+                errors["price_tg"] = "Цена должна быть больше нуля."
 
     clean = {
         "destination": _text(data.get("destination")),
